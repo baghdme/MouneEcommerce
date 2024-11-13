@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Products{% endblock %}
+
+{% block content %}
+    <h1>Products</h1>
+    <a href="{{ url_for('admin_add_product') }}">Add New Product</a>
+    <ul>
+    {% for product in products %}
+        <li>
+            {{ product.name }} - ${{ product.price }}
+            [<a href="{{ url_for('admin_edit_product', product_id=product.id) }}">Edit</a>]
+            [<form action="{{ url_for('admin_delete_product', product_id=product.id) }}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>]
+        </li>
+    {% endfor %}
+    </ul>
+    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+{%endblock%}

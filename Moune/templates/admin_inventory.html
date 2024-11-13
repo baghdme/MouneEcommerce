@@ -1,0 +1,25 @@
+<!-- templates/admin_inventory.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Inventory Management</h2>
+{% for warehouse in warehouses %}
+    <h3>{{ warehouse.name }} ({{ warehouse.location }})</h3>
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+        </tr>
+        {% for inventory in warehouse.inventories %}
+        <tr>
+            <td>{{ inventory.product.name }}</td>
+            <td>{{ inventory.quantity }}</td>
+        </tr>
+        <td {% if inventory.quantity <= 5 %}style="color:red;"{% endif %}>
+            {{ inventory.quantity }}
+        </td>        
+        {% endfor %}
+    </table>
+{% endfor %}
+<a href="{{ url_for('admin_update_inventory') }}">Update Inventory</a>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!-- templates/admin_update_inventory.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Update Inventory</h2>
+<form method="POST">
+    <div>
+        <label for="warehouse_id">Warehouse:</label>
+        <select name="warehouse_id">
+            {% for warehouse in warehouses %}
+            <option value="{{ warehouse.id }}">{{ warehouse.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="product_id">Product:</label>
+        <select name="product_id">
+            {% for product in products %}
+            <option value="{{ product.id }}">{{ product.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" min="0" value="0">
+    </div>
+    <button type="submit">Update Inventory</button>
+</form>
+{% endblock %}

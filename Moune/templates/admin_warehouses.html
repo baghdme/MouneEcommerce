@@ -1,0 +1,21 @@
+<!-- templates/admin_warehouses.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Warehouses</h2>
+    <a href="{{ url_for('admin_add_warehouse') }}"><button>Add New Warehouse</button></a>
+    <table border="1" cellpadding="10" cellspacing="0">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Location</th>
+        </tr>
+        {% for warehouse in warehouses %}
+            <tr>
+                <td>{{ warehouse.id }}</td>
+                <td>{{ warehouse.name }}</td>
+                <td>{{ warehouse.location }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

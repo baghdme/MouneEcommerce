@@ -1,0 +1,10 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 style="text-align: center;">Welcome to Mouné E-commerce!</h1>
+    <p style="text-align: center;">Your one-stop shop for all your needs.</p>
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('view_products') }}"><button>Browse Products</button></a>
+    </div>
+{% endblock %}

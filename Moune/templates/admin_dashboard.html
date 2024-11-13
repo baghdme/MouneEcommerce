@@ -1,0 +1,62 @@
+<!-- templates/admin_dashboard.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Welcome, {{ username }}!</h1>
+    <p>Your roles: {{ roles | join(', ') }}</p>
+    <h2>Admin Dashboard</h2>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+
+        <!-- Product Management -->
+        {% if 'manage_products' in permissions %}
+        <div style="flex: 1 1 200px; border: 1px solid #ccc; padding: 20px; border-radius: 5px;">
+            <h3>Product Management</h3>
+            <a href="{{ url_for('admin_products') }}">
+                <button style="width: 100%; padding: 10px;">Manage Products</button>
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- Category Management -->
+        {% if 'manage_categories' in permissions %}
+        <div style="flex: 1 1 200px; border: 1px solid #ccc; padding: 20px; border-radius: 5px;">
+            <h3>Category Management</h3>
+            <a href="{{ url_for('admin_categories') }}">
+                <button style="width: 100%; padding: 10px;">Manage Categories</button>
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- Order Management -->
+        {% if 'manage_orders' in permissions %}
+        <div style="flex: 1 1 200px; border: 1px solid #ccc; padding: 20px; border-radius: 5px;">
+            <h3>Order Management</h3>
+            <a href="{{ url_for('admin_orders') }}">
+                <button style="width: 100%; padding: 10px;">Manage Orders</button>
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- User Management -->
+        {% if 'manage_users' in permissions %}
+        <div style="flex: 1 1 200px; border: 1px solid #ccc; padding: 20px; border-radius: 5px;">
+            <h3>User Management</h3>
+            <a href="{{ url_for('admin_users') }}">
+                <button style="width: 100%; padding: 10px;">Manage Users</button>
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- Inventory Management -->
+        {% if 'manage_inventory' in permissions %}
+        <div style="flex: 1 1 200px; border: 1px solid #ccc; padding: 20px; border-radius: 5px;">
+            <h3>Inventory Management</h3>
+            <a href="{{ url_for('admin_inventory') }}">
+                <button style="width: 100%; padding: 10px;">Manage Inventory</button>
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

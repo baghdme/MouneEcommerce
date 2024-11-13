@@ -1,0 +1,37 @@
+<!-- templates/cart.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Your Cart</h2>
+
+{% if cart and cart.items %}
+    <div class="cart-list">
+        {% for item in cart.items %}
+            <div class="cart-item">
+                <h3>{{ item.product.name }}</h3>
+                <p>{{ item.product.description }}</p>
+                <p>Price: ${{ "%.2f"|format(item.product.price) }}</p>
+                <p>Subtotal: ${{ "%.2f"|format(item.product.price * item.quantity) }}</p>
+
+                <!-- Update Quantity Form -->
+                <form method="POST" action="{{ url_for('update_cart_item', item_id=item.id) }}">
+                    <label for="quantity">Quantity:</label>
+                    {{ forms[item.id].quantity(min=1, max=item.product.get_total_inventory(), value=item.quantity) }}
+                    {{ forms[item.id].update(class_='btn btn-primary btn-sm') }}
+                </form>
+
+                <!-- Remove Item Form -->
+                <form method="POST" action="{{ url_for('remove_cart_item', item_id=item.id) }}">
+                    {{ forms[item.id].remove(class_='btn btn-danger btn-sm') }}
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+    <p><strong>Total:</strong> ${{ "%.2f"|format(total) }}</p>
+    <a href="{{ url_for('checkout') }}"><button class="btn btn-success">Checkout</button></a>
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+
+<a href="{{ url_for('view_products') }}">Continue Shopping</a>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!-- templates/view_product_detail.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ product.name }}</h2>
+<p>{{ product.description }}</p>
+<p>Price: ${{ "%.2f"|format(product.price) }}</p>
+<p>Available Stock: {{ product.get_total_inventory() }}</p>
+
+{% if product.get_total_inventory() > 0 %}
+    <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" min="1" max="{{ product.get_total_inventory() }}" value="1">
+        <button type="submit">Add to Cart</button>
+    </form>
+{% else %}
+    <p style="color: red;">This product is currently out of stock.</p>
+{% endif %}
+
+<a href="{{ url_for('view_products') }}">Back to Products</a>
+{% endblock %}
