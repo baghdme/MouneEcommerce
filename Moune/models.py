@@ -14,10 +14,22 @@ class User(db.Model):
     roles = db.Column(db.String(200), nullable=False, default='customer')  # e.g., 'super_admin,product_manager'
 
     def set_password(self, password):
+        if not self.is_password_allowed(password):
+            raise ValueError("Password does not meet the criteria")
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def is_password_allowed(self, password):
+        allowlist = [
+            lambda password: len(password) >= 8,  # Minimum length
+            lambda password: any(char.isdigit() for char in password),  # Contains a number
+            lambda password: any(char.isupper() for char in password),  # Contains an uppercase letter
+            lambda password: any(char in "!@#$%^&*()_+-=[]{}|;':,.<>?`~" for char in password)  # Contains a special character
+        ]
+        return all(criteria(password) for criteria in allowlist)
+
 
     def __repr__(self):
         return f'<User {self.username}>'
