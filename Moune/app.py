@@ -365,7 +365,12 @@ def customer_register():
             email=form.email.data,
             role='customer'
         )
-        user.set_password(form.password.data)
+        try:
+            user.set_password(form.password.data)
+        except ValueError as e:
+            flash(str(e), 'danger')  # Display the error message to the user
+            return render_template('customer_register.html', form=form)
+        
         db.session.add(user)
         db.session.commit()
         flash('Registration successful! You can now log in.', 'success')
