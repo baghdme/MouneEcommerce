@@ -48,26 +48,25 @@ def permission_required(permission):
         return decorated_function
     return decorator
 
-
 with app.app_context():
     db.create_all()
     
     # Create admin user if it doesn't exist
     admin_user = User.query.filter_by(username='admin').first()
-    if not admin_user:
+    '''    if not admin_user:
         admin_user = User(
             username='admin',
             email='admin@example.com',
             roles='super_admin'  # Assign the super_admin role
         )
-        admin_user.set_password('admin123')  # Use a secure password in production
+        admin_user.set_password('Admin123!')  # Updated password
         db.session.add(admin_user)
         db.session.commit()
     else:
-        # Ensure the admin has the super_admin role
-        if 'super_admin' not in admin_user.roles.split(','):
-            admin_user.roles += ',super_admin'
-            db.session.commit()
+        # Ensure the admin has the super_admin role'''
+    if 'super_admin' not in admin_user.roles.split(','):
+        admin_user.roles += ',super_admin'
+        db.session.commit()
 
     # Add sample categories if none exist
     if Category.query.count() == 0:
@@ -88,11 +87,6 @@ with app.app_context():
     
     # Create a sample customer user if not exists
     customer_user = User.query.filter_by(username='customer').first()
-    if not customer_user:
-        customer_user = User(username='customer', email='customer@example.com', role='customer')
-        customer_user.set_password('customer123')
-        db.session.add(customer_user)
-        db.session.commit()
     
     # Ensure there is at least one category
     sample_category = Category.query.first()
@@ -113,29 +107,7 @@ with app.app_context():
         db.session.add(sample_product)
         db.session.commit()
         print(f"Sample Product ID: {sample_product.id}")  # Debugging statement
-    
-    # Create a sample order if none exists
-    if Order.query.count() == 0:
-        if sample_product.id is not None:
-            sample_order = Order(
-                user_id=customer_user.id,
-                status='Pending',
-                total_amount=sample_product.price * 2
-            )
-            db.session.add(sample_order)
-            db.session.commit()
-        
-            # Create order items
-            order_item = OrderItem(
-                order_id=sample_order.id,
-                product_id=sample_product.id,
-                quantity=2,
-                unit_price=sample_product.price
-            )
-            db.session.add(order_item)
-            db.session.commit()
-        else:
-            flash('Sample product ID is None. OrderItem cannot be created.', 'warning')
+
             
     # Seed Warehouses
     if Warehouse.query.count() == 0:
