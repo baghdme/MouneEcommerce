@@ -263,14 +263,3 @@ Use the provided script to generate a secure secret key.
 
 Contributions are welcome! Please fork the repository and submit a pull request.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For any inquiries or support, please contact [your-email@example.com](mailto:your-email@example.com).
-
----
-
-**Note:** Replace `yourusername`, `your-generated-secret-key`, and `your-email@example.com` with your actual GitHub username, generated secret key, and contact email respectively.
