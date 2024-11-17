@@ -258,8 +258,3 @@ Use the provided script to generate a secure secret key.
    SECRET_KEY=dGhpcyBpcyBhIHNhbXBsZSBzZWNyZXQga2V5IGZvciBjb25maWc=
    DATABASE_URL=postgresql://username:password@localhost:5432/yourdatabase
    ```
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request.
-
