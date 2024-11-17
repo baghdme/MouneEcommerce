@@ -1,12 +1,11 @@
 <!-- templates/admin_bulk_upload.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Bulk Upload Products</title>
-    <!-- Include your CSS and other head elements -->
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}
+    Bulk Upload Products
+{% endblock %}
+
+{% block content %}
     <h1>Bulk Upload Products via CSV</h1>
     
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -21,16 +20,15 @@
     
     <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.csv_file.label }}<br>
-            {{ form.csv_file() }}<br>
+        <div class="form-group">
+            {{ form.csv_file.label(class="form-label") }}
+            {{ form.csv_file(class="form-control") }}
             {% for error in form.csv_file.errors %}
-                <span style="color: red;">[{{ error }}]</span>
+                <span class="text-danger">{{ error }}</span>
             {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
     </form>
     
-    <p><a href="{{ url_for('admin_products') }}">Back to Products</a></p>
-</body>
-</html>
+    <a href="{{ url_for('admin_products') }}" class="btn btn-secondary mt-3">Back to Products</a>
+{% endblock %}
