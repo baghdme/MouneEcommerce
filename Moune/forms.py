@@ -1,25 +1,17 @@
+# forms.py
+
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, FloatField, IntegerField, SelectField, SubmitField,PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, NumberRange, Email, EqualTo, ValidationError, URL, Optional
-from models import User
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectMultipleField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, TextAreaField, FloatField, IntegerField, SelectField, PasswordField, SelectMultipleField, SubmitField
+from wtforms.validators import DataRequired, Length, NumberRange, Email, EqualTo, ValidationError, Optional
 from models import User
 
-# forms.py
 class ProductForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired(), Length(max=100)])
     description = TextAreaField('Description', validators=[DataRequired()])
     price = FloatField('Price', validators=[DataRequired(), NumberRange(min=0)])
     category_id = SelectField('Category', coerce=int, validators=[DataRequired()])
-    
-    # Remove this line:
-    # inventory_count = IntegerField('Inventory Count', validators=[DataRequired(), NumberRange(min=0)])
-    
     submit = SubmitField('Submit')
 
-    
 class CategoryForm(FlaskForm):
     name = StringField('Category Name', validators=[DataRequired(), Length(max=100)])
     parent_id = SelectField('Parent Category', coerce=int, validators=[Optional()])
@@ -28,7 +20,7 @@ class CategoryForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=4, max=64)])
     email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     confirm_password = PasswordField('Confirm Password', validators=[
         DataRequired(),
         EqualTo('password', message='Passwords must match.')
@@ -47,7 +39,7 @@ class RegistrationForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     submit = SubmitField('Login')
 
 class UpdateCartForm(FlaskForm):
@@ -58,7 +50,7 @@ class UpdateCartForm(FlaskForm):
 class AdminUserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=4, max=64)])
     email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     confirm_password = PasswordField('Confirm Password', validators=[
         DataRequired(),
         EqualTo('password', message='Passwords must match.')

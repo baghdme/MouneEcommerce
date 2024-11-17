@@ -1,22 +1,36 @@
+<!-- templates/admin_login.html -->
 {% extends "base.html" %}
 
-{% block title %}Admin login{% endblock %}
+{% block title %}Admin Login{% endblock %}
 
 {% block content %}
-
     <h2>Admin Login</h2>
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="{{ category }}">{{ message }}</div>
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
         {% endfor %}
       {% endif %}
     {% endwith %}
     <form method="POST">
-        <label for="username">Username:</label>
-        <input type="text" name="username" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required><br><br>
-        <button type="submit">Login</button>
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            {{ form.email(class="form-control", placeholder="Enter your email") }}
+            {% for error in form.email.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            {{ form.password(class="form-control", placeholder="Enter your password") }}
+            {% for error in form.password.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
     </form>
 {% endblock %}

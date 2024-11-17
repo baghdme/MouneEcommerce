@@ -128,3 +128,4 @@ class Inventory(db.Model):
 
     def __repr__(self):
         return f'<Inventory Product {self.product_id} in Warehouse {self.warehouse_id} Quantity {self.quantity}>'
+
