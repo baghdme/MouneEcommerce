@@ -1,4 +1,3 @@
-```markdown
 # Moune E-commerce
 
 A Flask-based e-commerce platform with robust user authentication, admin management, bulk product uploads via CSV, and comprehensive logging.
@@ -176,6 +175,90 @@ Access the app at [http://localhost:5000](http://localhost:5000).
 
 Logs capture key events and changes for monitoring and debugging purposes.
 
+## Configuration
+
+### Using Environment Variables
+
+1. **Create a `.env` File:**
+
+   In the project root directory, create a `.env` file and add your secret key and database URL:
+
+   ```env
+   SECRET_KEY=your-generated-secret-key
+   DATABASE_URL=sqlite:///app.db  # Or your preferred database URI
+   ```
+
+2. **Load Environment Variables in `config.py`:**
+
+   ```python
+   # config.py
+   import os
+   from dotenv import load_dotenv
+
+   basedir = os.path.abspath(os.path.dirname(__file__))
+   load_dotenv(os.path.join(basedir, '.env'))
+
+   class Config:
+       SECRET_KEY = os.environ.get('SECRET_KEY')
+       SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+           'sqlite:///' + os.path.join(basedir, 'app.db')
+       SQLALCHEMY_TRACK_MODIFICATIONS = False
+       # Add other configuration settings as needed
+   ```
+
+3. **Ensure `.env` is Not Tracked by Version Control:**
+
+   Add `.env` to your `.gitignore` file to prevent it from being committed to your repository.
+
+   ```gitignore
+   # .gitignore
+   .env
+   __pycache__/
+   *.pyc
+   instance/
+   .DS_Store
+   ```
+
+## Generating a Secret Key
+
+Use the provided script to generate a secure secret key.
+
+1. **Create `generate_secret_key.py`:**
+
+   ```python
+   # generate_secret_key.py
+   import secrets
+
+   def generate_secret_key(length=32):
+       return secrets.token_urlsafe(length)
+
+   if __name__ == "__main__":
+       secret_key = generate_secret_key()
+       print(f"Your new secret key is:\n{secret_key}")
+   ```
+
+2. **Run the Script:**
+
+   ```bash
+   python generate_secret_key.py
+   ```
+
+   **Output:**
+
+   ```
+   Your new secret key is:
+   dGhpcyBpcyBhIHNhbXBsZSBzZWNyZXQga2V5IGZvciBjb25maWc=
+   ```
+
+3. **Add to `.env`:**
+
+   Copy the generated key and paste it into your `.env` file:
+
+   ```env
+   SECRET_KEY=dGhpcyBpcyBhIHNhbXBsZSBzZWNyZXQga2V5IGZvciBjb25maWc=
+   DATABASE_URL=postgresql://username:password@localhost:5432/yourdatabase
+   ```
+
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request.
@@ -189,5 +272,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 For any inquiries or support, please contact [your-email@example.com](mailto:your-email@example.com).
 
 ---
+
 **Note:** Replace `yourusername`, `your-generated-secret-key`, and `your-email@example.com` with your actual GitHub username, generated secret key, and contact email respectively.
-```
