@@ -1,2 +1,20 @@
 2024-11-17 18:09:50,253 INFO: Inserted Cart: <Cart 1 for User 3>
 2024-11-17 18:09:50,258 INFO: Inserted CartItem: <CartItem 1 - Product 1 x 1>
+2024-11-17 19:01:31,750 INFO: Inserted Category: <Category Electronics>
+2024-11-17 19:01:31,764 INFO: Inserted Product: <Product Apple iPhone 14>
+2024-11-17 19:01:31,765 INFO: Inserted Product: <Product Samsung Galaxy S22>
+2024-11-17 19:01:31,765 INFO: Inserted Category: <Category Computers>
+2024-11-17 19:01:31,767 INFO: Inserted Product: <Product Dell XPS 13>
+2024-11-17 19:01:31,768 INFO: Inserted Category: <Category Audio>
+2024-11-17 19:01:31,770 INFO: Inserted Product: <Product Sony WH-1000XM4>
+2024-11-17 19:01:31,771 INFO: Inserted Category: <Category Kitchen Appliances>
+2024-11-17 19:01:31,773 INFO: Inserted Product: <Product Instant Pot Duo>
+2024-11-17 19:01:31,774 INFO: Inserted Category: <Category Footwear>
+2024-11-17 19:01:31,777 INFO: Inserted Product: <Product Nike Air Max 270>
+2024-11-17 19:01:31,777 INFO: Inserted Category: <Category Apparel>
+2024-11-17 19:01:31,779 INFO: Inserted Product: <Product Levi's 501 Original Jeans>
+2024-11-17 19:01:31,780 INFO: Inserted Category: <Category Photography>
+2024-11-17 19:01:31,782 INFO: Inserted Product: <Product Canon EOS Rebel T7>
+2024-11-17 19:01:31,783 INFO: Inserted Category: <Category Wearables>
+2024-11-17 19:01:31,785 INFO: Inserted Product: <Product Fitbit Charge 5>
+2024-11-17 19:01:31,785 INFO: Inserted Product: <Product Kindle Paperwhite>

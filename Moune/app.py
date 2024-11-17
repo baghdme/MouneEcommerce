@@ -20,14 +20,14 @@ app.config.from_object(Config)
 db.init_app(app)
 
 # Ensure the logs directory exists
-if not os.path.exists('Moune/logs'):
-    os.mkdir('Moune/logs')
+if not os.path.exists('MouneEcommerce/Moune/logs'):
+    os.mkdir('MouneEcommerce/Moune/logs')
 
 # Configure Main Logger
 main_logger = logging.getLogger('main_logger')
 main_logger.setLevel(logging.INFO)
 
-main_handler = RotatingFileHandler('Moune/logs/moune_ecommerce.log', maxBytes=10240, backupCount=10)
+main_handler = RotatingFileHandler('MouneEcommerce/Moune/logs/moune_ecommerce.log', maxBytes=10240, backupCount=10)
 main_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 main_handler.setFormatter(main_formatter)
 main_logger.addHandler(main_handler)
@@ -36,7 +36,7 @@ main_logger.addHandler(main_handler)
 model_logger = logging.getLogger('model_logger')
 model_logger.setLevel(logging.INFO)
 
-model_handler = RotatingFileHandler('Moune/logs/models.log', maxBytes=10240, backupCount=10)
+model_handler = RotatingFileHandler('MouneEcommerce/Moune/logs/models.log', maxBytes=10240, backupCount=10)
 model_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 model_handler.setFormatter(model_formatter)
 model_logger.addHandler(model_handler)
@@ -387,6 +387,75 @@ def admin_delete_product(product_id):
     main_logger.info(f'Product deleted: {product.name} by Admin ID {session["user_id"]}')
     return redirect(url_for('admin_products'))
 
+import csv
+from io import TextIOWrapper
+from forms import BulkUploadForm
+
+@app.route('/admin/products/bulk_upload', methods=['GET', 'POST'])
+@permission_required('manage_products')
+def admin_bulk_upload():
+    form = BulkUploadForm()
+    if form.validate_on_submit():
+        file = form.csv_file.data
+        if not file:
+            flash('No file uploaded.', 'danger')
+            return redirect(request.url)
+        
+        try:
+            stream = TextIOWrapper(file.stream, encoding='utf-8')
+            csv_reader = csv.DictReader(stream)
+            products_added = 0
+            for row in csv_reader:
+                # Expected CSV columns: name, description, price, category
+                name = row.get('name')
+                description = row.get('description')
+                price = row.get('price')
+                category_name = row.get('category')
+                
+                if not name or not description or not price or not category_name:
+                    main_logger.warning(f'Skipping row with missing data: {row}')
+                    continue
+                
+                try:
+                    price = float(price)
+                except ValueError:
+                    main_logger.warning(f'Invalid price for product "{name}": {price}')
+                    continue
+                
+                category = Category.query.filter_by(name=category_name).first()
+                if not category:
+                    # Optionally, create the category if it doesn't exist
+                    category = Category(name=category_name)
+                    db.session.add(category)
+                    db.session.commit()
+                    main_logger.info(f'Created new category "{category_name}"')
+                
+                # Check if the product already exists to avoid duplicates
+                existing_product = Product.query.filter_by(name=name, category_id=category.id).first()
+                if existing_product:
+                    main_logger.warning(f'Product "{name}" in category "{category_name}" already exists. Skipping.')
+                    continue
+                
+                product = Product(
+                    name=name,
+                    description=description,
+                    price=price,
+                    category_id=category.id
+                )
+                db.session.add(product)
+                products_added += 1
+            
+            db.session.commit()
+            flash(f'Successfully added {products_added} products.', 'success')
+            main_logger.info(f'Bulk uploaded {products_added} products via CSV by Admin ID {session["user_id"]}')
+            return redirect(url_for('admin_products'))
+        
+        except Exception as e:
+            main_logger.error(f'Error processing CSV upload: {str(e)}')
+            flash('An error occurred while processing the file.', 'danger')
+            return redirect(request.url)
+    
+    return render_template('admin_bulk_upload.html', form=form)
 # Admin Category Management Routes
 @app.route('/admin/categories')
 @permission_required('manage_categories')

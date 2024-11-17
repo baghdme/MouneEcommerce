@@ -74,3 +74,15 @@ class AdminUserForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('Email already registered. Please choose a different one.')
+
+# forms.py
+from flask_wtf import FlaskForm
+from wtforms import FileField, SubmitField
+from flask_wtf.file import FileAllowed, FileRequired
+
+class BulkUploadForm(FlaskForm):
+    csv_file = FileField('Upload CSV', validators=[
+        FileRequired(),
+        FileAllowed(['csv'], 'CSV files only!')
+    ])
+    submit = SubmitField('Upload')
