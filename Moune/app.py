@@ -20,14 +20,14 @@ app.config.from_object(Config)
 db.init_app(app)
 
 # Ensure the logs directory exists
-if not os.path.exists('MouneEcommerce/Moune/logs'):
-    os.mkdir('MouneEcommerce/Moune/logs')
+if not os.path.exists('logs'):
+    os.mkdir('logs')
 
 # Configure Main Logger
 main_logger = logging.getLogger('main_logger')
 main_logger.setLevel(logging.INFO)
 
-main_handler = RotatingFileHandler('MouneEcommerce/Moune/logs/moune_ecommerce.log', maxBytes=10240, backupCount=10)
+main_handler = RotatingFileHandler('logs/moune_ecommerce.log', maxBytes=10240, backupCount=10)
 main_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 main_handler.setFormatter(main_formatter)
 main_logger.addHandler(main_handler)
@@ -36,7 +36,7 @@ main_logger.addHandler(main_handler)
 model_logger = logging.getLogger('model_logger')
 model_logger.setLevel(logging.INFO)
 
-model_handler = RotatingFileHandler('MouneEcommerce/Moune/logs/models.log', maxBytes=10240, backupCount=10)
+model_handler = RotatingFileHandler('logs/models.log', maxBytes=10240, backupCount=10)
 model_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 model_handler.setFormatter(model_formatter)
 model_logger.addHandler(model_handler)
@@ -193,6 +193,7 @@ def customer_login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and 'customer' in user.roles.split(',') and user.check_password(form.password.data):
+            session.permanent = True  # Make the session persistent
             session['user_id'] = user.id
             session['customer_logged_in'] = True
             session['customer_user'] = user.username
@@ -219,6 +220,7 @@ def admin_login():
         is_admin = any(role in ADMIN_ROLES for role in user_roles)
         
         if user and user.check_password(password) and is_admin:
+            session.permanent = True  # Make the session persistent
             session['user_id'] = user.id
             session['admin_logged_in'] = True
             session['admin_user'] = user.username
