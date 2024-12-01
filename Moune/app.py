@@ -403,6 +403,10 @@ def admin_bulk_upload():
             flash('No file uploaded.', 'danger')
             return redirect(request.url)
         
+        if file.content_type != 'text/csv':
+            flash('Invalid file type. Please upload a CSV file.', 'danger')
+            return redirect(request.url)
+
         try:
             stream = TextIOWrapper(file.stream, encoding='utf-8')
             csv_reader = csv.DictReader(stream)

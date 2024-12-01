@@ -1,10 +1,13 @@
 import os
 from datetime import timedelta
+from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'oD9amP_AE5-_iCr0_FC4gczlywfa_NcUT9dr9WD3VzY'
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    if not SECRET_KEY:
+        raise ValueError("No SECRET_KEY set for Flask application")
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'moune_ecommerce.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Removed the comma
-    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
