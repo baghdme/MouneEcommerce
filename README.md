@@ -5,19 +5,19 @@ A Flask-based e-commerce platform with robust user authentication, admin managem
 ## Features
 
 - **User Authentication**
-  - Customer registration and login
-  - Admin login with role-based access
+  - Customer registration and login.
+  - Admin login with role-based access.
 
 - **Admin Dashboard**
-  - Manage products, categories, orders, inventory, and users
-  - Bulk upload products using CSV files
+  - Manage products, categories, orders, inventory, and users.
+  - Bulk upload products using CSV files.
 
 - **Product Management**
-  - Add, edit, delete products and categories
-  - Assign inventory levels across multiple warehouses
+  - Add, edit, delete products and categories.
+  - Assign inventory levels across multiple warehouses.
 
 - **Order Management**
-  - View and update order statuses
+  - View and update order statuses.
 
 - **User Management**
   - Manage admin users with different roles and permissions
